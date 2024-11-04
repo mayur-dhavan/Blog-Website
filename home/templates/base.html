@@ -64,7 +64,7 @@
       <a class="navbar-brand" href="/">
         <img style="width: 8%;"
           src="https://e7.pngegg.com/pngimages/481/8/png-clipart-comparison-of-free-blog-hosting-services-computer-icons-blog-blogger-icon-blue-logo.png"
-          alt="Logo"> DataFlair Blogs
+          alt="Logo"> Healthy Dart Blogs
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,17 +110,25 @@
   </nav>
 
   <!-- Main Content Section -->
-  <div class="container">
+  {% block hero-banner %}
+    <section class="hero-banner text-center text-dark py-5" style="background-image: url('https://marketing-queen.com/wp-content/uploads/2020/03/Hero-Image-Responsiveness_166089026.jpg'); background-size: cover;">
+      <h1>Welcome to Healthy Dart Blogs</h1>
+      <p>Explore insightful articles and tutorials on technology, programming, and more!</p>
+      <a href="#home-blogs" class="btn btn-primary mt-3">Read Our Latest Posts</a>
+    </section>
+    {% endblock hero-banner %}
+
+  <div class="container" id="home-blogs">
     {% block body %}{% endblock %}
   </div>
 
-  <!-- Newsletter Section -->
+  <!-- Section -->
   {% block main-body %}
   <section class="newsletter-section bg-light py-4 mt-5">
     <div class="container text-center">
       <h5 class="mb-3">Subscribe to our Newsletter</h5>
       <p>Get the latest updates and blog posts directly in your inbox!</p>
-      <form method="POST" action="/subscribe/" class="d-flex justify-content-center">
+      <form method="POST" action="https://formspree.io/f/mqakpoey" class="d-flex justify-content-center">
         {% csrf_token %}
         <input type="email" name="email" class="form-control w-50" placeholder="Enter your email" required>
         <button type="submit" class="btn btn-primary ms-2">Subscribe</button>
