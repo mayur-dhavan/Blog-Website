@@ -46,9 +46,82 @@
 
     }
 
+    .footer-links a{
+      text-decoration: none;
+    }
     .search-bar {
       width: 200px;
       /* Increase the width of the search bar */
+    }
+    .category-tabs {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .category-tabs a{
+      text-decoration: none;
+    }
+    .category-tabs .category-btn {
+        margin: 5px;
+        padding: 10px 15px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 20px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .category-tabs .category-btn:hover, 
+    .category-tabs .category-btn.active {
+        background-color: #0056b3;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .blog-card {
+        width: 100%;
+        max-width: 360px;
+        margin: 0 auto;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .blog-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .blog-card img {
+        border-radius: 10px 10px 0 0;
+        object-fit: cover;
+        height: 200px;
+    }
+
+    .blog-card .card-body {
+        padding: 15px;
+    }
+
+    .blog-card .card-body h5 {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    .blog-card .card-body p {
+        color: #555;
+        margin-top: 10px;
+    }
+
+    .blog-card .card-body .read-more {
+        margin-top: 15px;
+        display: inline-block;
+        padding: 10px 20px;
+        color: #fff;
+        background-color: #007bff;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .blog-card .card-body .read-more:hover {
+        background-color: #0056b3;
     }
 
       {
@@ -64,7 +137,7 @@
       <a class="navbar-brand" href="/">
         <img style="width: 8%;"
           src="https://e7.pngegg.com/pngimages/481/8/png-clipart-comparison-of-free-blog-hosting-services-computer-icons-blog-blogger-icon-blue-logo.png"
-          alt="Logo"> Healthy Dart Blogs
+          alt="Logo"> Blog Website Using Django
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -137,6 +210,7 @@
   </section>
   {% endblock main-body %}
 
+  
   <!-- Footer Section -->
   {% include 'footer.html' %}
 

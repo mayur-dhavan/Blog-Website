@@ -20,6 +20,7 @@ ALLOWED_HOSTS = [
 
 
 # Application definition
+TAILWIND_APP_NAME = 'theme'  # Or any other name you choose
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -30,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ckeditor',
     'home',
+    'tailwind',
     'django.contrib.humanize'
 ]
 

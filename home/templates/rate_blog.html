@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Rate Blog{% endblock %}
+
+{% block body %}
+  <h2>Rate the blog: {{ post.title }}</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit Rating</button>
+  </form>
+{% endblock %}

@@ -17,6 +17,8 @@ urlpatterns = [
     path("edit_profile/", views.edit_profile, name="edit_profile"),
     path("user_profile/<int:myid>/", views.user_profile, name="user_profile"),
     
+    path('blog/<slug:slug>/rate/', views.rate_blog, name='rate_blog'),
+    
 #    user authentication
     path("register/", views.Register, name="register"),
     path("login/", views.Login, name="login"),

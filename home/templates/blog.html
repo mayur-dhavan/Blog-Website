@@ -6,25 +6,56 @@
 {% block css %}
 
 {% endblock %}
+
 {% block body %}
 <div class="container mt-5 mb-3">
 
+    <!-- Category Tabs Section -->
+    <div class="category-tabs">
+        <a href="{% url 'blogs' %}" class="category-btn {% if not request.GET.category %}active{% endif %}">All
+            Categories</a>
+        {% for category in categories %}
+        <a href="?category={{ category.name }}"
+            class="category-btn {% if request.GET.category == category.name %}active{% endif %}">
+            {{ category.name }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Blog Posts Section -->
     <div class="row">
         {% for post in posts %}
-        <div class="col-lg-4 my-4">
-            <div class="card shadow" style="width: 20rem; height: 33rem;">
-                <img src="/media/{{post.image}}" class="card-img-top" alt="..." height="250px">
+        <div class="col-lg-4 col-md-6 col-sm-12 my-4">
+            <div class="card blog-card shadow">
+                <img src="/media/{{ post.image }}" class="card-img-top" alt="Blog Image">
                 <div class="card-body">
-                  <h5 class="card-title">{{post.title}} <br><small>by {{post.author}}</small></h5>
-                  <p class="card-text">{{post.content| truncatechars:210}}</p>
-                  <a href="blog/{{post.slug}}" class="btn btn-primary">Read More {% if user.is_superuser %}<a href="delete_blog_post/{{post.slug}}/" class="btn btn-danger mx-4">Delete Blog</a>{% endif %}</a>
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <small>by {{ post.author }} | {{ post.dateTime|date:"F j, Y" }}</small>
+                    <p>{{ post.content|truncatechars:150 }}</p>
+                    <p><strong>Category:</strong> {{ post.category.name }}</p>
+                    <a href="blog/{{ post.slug }}" class="read-more">Read More</a>
+                    {% if user.is_superuser %}
+                    <a href="delete_blog_post/{{ post.slug }}/" class="btn btn-danger mx-2">Delete</a>
+                    {% endif %}
                 </div>
-              </div>
+            </div>
         </div>
         {% endfor %}
     </div>
+
+    <!-- No Blogs Found -->
+    {% if not posts %}
+    <div class="text-center mt-5">
+        <h4>No Blogs Found</h4>
+        <p>There are no blogs available in this category.</p>
+    </div>
+    {% endif %}
+
 </div>
 {% endblock %}
-{% block js %} 
-<script></script>
+
+{% block js %}
+<script>
+    // Add custom JavaScript if needed
+</script>
 {% endblock %}

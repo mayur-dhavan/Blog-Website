@@ -1,17 +1,25 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect,get_object_or_404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth  import authenticate,  login, logout
 from .models import *
+
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm, BlogPostForm
 from django.views.generic import UpdateView
 from django.contrib import messages
+from .forms import RatingForm
 
 
 def blogs(request):
-    posts = BlogPost.objects.all()
-    posts = BlogPost.objects.filter().order_by('-dateTime')
-    return render(request, "blog.html", {'posts':posts})
+    category_filter = request.GET.get('category', None)  # Get the category filter from query parameters
+    if category_filter:
+        posts = BlogPost.objects.filter(category__name=category_filter).order_by('-dateTime')
+    else:
+        posts = BlogPost.objects.all().order_by('-dateTime')
+    categories = Category.objects.all()  # Fetch all categories for the sidebar or filter options
+    return render(request, "blog.html", {'posts': posts, 'categories': categories})
+
+
 
 def blogs_comments(request, slug):
     post = BlogPost.objects.filter(slug=slug).first()
@@ -31,33 +39,48 @@ def Delete_Blog_Post(request, slug):
         return redirect('/')
     return render(request, 'delete_blog_post.html', {'posts':posts})
 
+
 def search(request):
     if request.method == "POST":
         searched = request.POST['searched']
-        blogs = BlogPost.objects.filter(title__contains=searched)
-        return render(request, "search.html", {'searched':searched, 'blogs':blogs})
+        category_filter = request.POST.get('category', None)
+        if category_filter:
+            blogs = BlogPost.objects.filter(title__icontains=searched, category__name=category_filter)
+        else:
+            blogs = BlogPost.objects.filter(title__icontains=searched)
+        categories = Category.objects.all()
+        return render(request, "search.html", {'searched': searched, 'blogs': blogs, 'categories': categories})
     else:
-        return render(request, "search.html", {})
+        categories = Category.objects.all()
+        return render(request, "search.html", {'categories': categories})
 
-@login_required(login_url = '/login')
+
+
+@login_required(login_url='/login')
 def add_blogs(request):
-    if request.method=="POST":
+    if request.method == "POST":
         form = BlogPostForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             blogpost = form.save(commit=False)
             blogpost.author = request.user
+            blogpost.category = form.cleaned_data['category']  # Save the selected category
             blogpost.save()
             obj = form.instance
             alert = True
-            return render(request, "add_blogs.html",{'obj':obj, 'alert':alert})
+            return render(request, "add_blogs.html", {'obj': obj, 'alert': alert})
     else:
-        form=BlogPostForm()
-    return render(request, "add_blogs.html", {'form':form})
+        form = BlogPostForm()
+    return render(request, "add_blogs.html", {'form': form})
+
+
+
+
 
 class UpdatePostView(UpdateView):
     model = BlogPost
     template_name = 'edit_blog_post.html'
-    fields = ['title', 'slug', 'content', 'image']
+    fields = ['title', 'slug', 'content', 'image', 'category']  # Add the category field
+
 
 
 def user_profile(request, myid):
@@ -134,3 +157,29 @@ def terms_of_service(request):
 
 def contact(request):
     return render(request, 'contact.html')
+
+
+
+
+@login_required
+def rate_blog(request, slug):
+    blog_post = get_object_or_404(BlogPost, slug=slug)
+    user_rating = Rating.objects.filter(user=request.user, blog_post=blog_post).first()
+
+    if request.method == "POST":
+        # If user has already rated, we can either update or return an error
+        if user_rating:
+            # Update existing rating
+            user_rating.score = request.POST.get('score')
+            user_rating.save()
+        else:
+            # Create new rating
+            form = RatingForm(request.POST)
+            if form.is_valid():
+                form.instance.user = request.user
+                form.instance.blog_post = blog_post
+                form.save()
+
+        return redirect('blog_detail', slug=slug)  # Redirect to the blog detail page
+
+    return render(request, 'rate_blog.html', {'blog_post': blog_post, 'user_rating': user_rating})
