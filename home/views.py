@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect,get_object_or_404, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth  import authenticate,  login, logout
 from .models import *
-
+from django.db.models import Avg
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm, BlogPostForm
 from django.views.generic import UpdateView
 from django.contrib import messages
-from .forms import RatingForm
+from django.http import JsonResponse
+
+
 
 
 def blogs(request):
@@ -22,15 +24,54 @@ def blogs(request):
 
 
 def blogs_comments(request, slug):
+    # Fetch the blog post based on the slug
     post = BlogPost.objects.filter(slug=slug).first()
     comments = Comment.objects.filter(blog=post)
-    if request.method=="POST":
-        user = request.user
-        content = request.POST.get('content','')
-        blog_id =request.POST.get('blog_id','')
-        comment = Comment(user = user, content = content, blog=post)
-        comment.save()
-    return render(request, "blog_comments.html", {'post':post, 'comments':comments})
+    
+    # Initialize variables for user rating and average rating
+    user_rating = None
+    average_rating = None
+
+    # Check if the user is authenticated
+    if request.user.is_authenticated:
+        try:
+            # Get the current user's rating for this blog (if it exists)
+            user_rating = BlogRating.objects.get(blog=post, user=request.user)
+        except BlogRating.DoesNotExist:
+            user_rating = None
+
+        # Handle form submission for rating
+        if request.method == "POST" and 'rating' in request.POST:
+            from .forms import BlogRatingForm  # Import the rating form
+            form = BlogRatingForm(request.POST)
+            if form.is_valid():
+                # Save or update the user's rating for this blog
+                rating = form.save(commit=False)
+                rating.blog = post
+                rating.user = request.user
+                rating.save()
+                messages.success(request, "Your rating has been submitted!")
+                return redirect('blogs_comments', slug=slug)  # Redirect to prevent duplicate submissions
+        else:
+            # Pre-fill the form with the user's existing rating, if available
+            from .forms import BlogRatingForm
+            form = BlogRatingForm(instance=user_rating)
+    else:
+        form = None
+
+    # Calculate the average rating for the blog
+    ratings = BlogRating.objects.filter(blog=post)
+    if ratings.exists():
+        average_rating = ratings.aggregate(Avg('rating'))['rating__avg']
+
+    return render(request, "blog_comments.html", {
+        'post': post,
+        'comments': comments,
+        'user_rating': user_rating,
+        'average_rating': average_rating,
+        'form': form,  # Pass the form to the template
+    })
+
 
 def Delete_Blog_Post(request, slug):
     posts = BlogPost.objects.get(slug=slug)
@@ -71,8 +112,6 @@ def add_blogs(request):
     else:
         form = BlogPostForm()
     return render(request, "add_blogs.html", {'form': form})
-
-
 
 
 
@@ -158,28 +197,3 @@ def terms_of_service(request):
 def contact(request):
     return render(request, 'contact.html')
 
-
-
-
-@login_required
-def rate_blog(request, slug):
-    blog_post = get_object_or_404(BlogPost, slug=slug)
-    user_rating = Rating.objects.filter(user=request.user, blog_post=blog_post).first()
-
-    if request.method == "POST":
-        # If user has already rated, we can either update or return an error
-        if user_rating:
-            # Update existing rating
-            user_rating.score = request.POST.get('score')
-            user_rating.save()
-        else:
-            # Create new rating
-            form = RatingForm(request.POST)
-            if form.is_valid():
-                form.instance.user = request.user
-                form.instance.blog_post = blog_post
-                form.save()
-
-        return redirect('blog_detail', slug=slug)  # Redirect to the blog detail page
-
-    return render(request, 'rate_blog.html', {'blog_post': blog_post, 'user_rating': user_rating})

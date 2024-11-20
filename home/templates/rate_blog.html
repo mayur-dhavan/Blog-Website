@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Rate Blog{% endblock %}
+{% block content %}
+    <h2>Rate Blog Post: {{ blog_post.title }}</h2>
+    
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Rating</button>
+    </form>
 
-{% block body %}
-  <h2>Rate the blog: {{ post.title }}</h2>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Submit Rating</button>
-  </form>
+    {% if user_rating %}
+        <p>Your current rating: {{ user_rating.score }} stars</p>
+    {% endif %}
 {% endblock %}

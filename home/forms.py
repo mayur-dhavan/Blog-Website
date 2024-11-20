@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, BlogPost, Category, Rating
+from .models import Profile, BlogPost, Category, BlogRating
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -18,7 +18,7 @@ class BlogPostForm(forms.ModelForm):
 
     class Meta:
         model = BlogPost
-        fields = ('title', 'slug', 'content', 'image', 'category')  # Include 'category' in fields
+        fields = ('title','category', 'slug', 'content', 'image')  # Include 'category' in fields
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title of the Blog'}),
             'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Copy the title with no space and a hyphen in between'}),
@@ -26,9 +26,17 @@ class BlogPostForm(forms.ModelForm):
             'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
 
-class RatingForm(forms.ModelForm):
+class BlogRatingForm(forms.ModelForm):
     class Meta:
-        model = Rating
-        fields = ['score']  # Only the score field is needed for the rating
-
-    score = forms.ChoiceField(choices=[(i, i) for i in range(1, 6)], widget=forms.RadioSelect())
+        model = BlogRating
+        fields = ['rating']  # We only need the rating field
+        widgets = {
+            'rating': forms.NumberInput(attrs={
+                'min': 1, 'max': 5, 'step': 1,
+                'class': 'form-control',
+                'placeholder': 'Rate from 1 to 5'
+            })
+        }
+        labels = {
+            'rating': 'Rate this blog (1-5):',
+        }
