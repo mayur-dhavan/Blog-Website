@@ -1,25 +1,56 @@
 {% extends 'base.html' %}
 
-{% block title %} Profile {% endblock %}
-{% block add_blogs_active %} active {% endblock add_blogs_active %}
+{% block title %} Add Blog {% endblock %}
+{% block add_blogs_active %} active {% endblock %}
 
 {% block css %}
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/35.0.0/classic/ckeditor.css">
 {% endblock %}
+
 {% block body %}
-<form action="/add_blogs/" enctype="multipart/form-data" method="POST"> {% csrf_token %}
-<div class="container mt-4">
-{{ form.as_p }}
-<button class="btn btn-primary">Add Blog</button>
-</div>
+<form action="/add_blogs/" enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    <div class="container mt-4">
+        {{ form.as_p }}
+        <button class="btn btn-primary" id="submit-btn">Add Blog</button>
+    </div>
 </form>
 {% endblock %}
+
 {% block js %}
-<script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.0.0/classic/ckeditor.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Select the content field
+            const contentField = document.querySelector('#id_content');
+            
+            // Initialize CKEditor on the content field
+            ClassicEditor
+                .create(contentField)
+                .then(editor => {
+                    // Remove the 'required' attribute from the original textarea
+                    contentField.removeAttribute('required');
+                    
+                    // Optionally, you can attach an event listener to submit the form after validation
+                    const submitBtn = document.getElementById('submit-btn');
+                    submitBtn.addEventListener('click', function(e) {
+                        // Check if CKEditor content is empty, manually handle validation
+                        if (!editor.getData().trim()) {
+                            alert('Content cannot be empty.');
+                            e.preventDefault();  // Prevent form submission
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
+
     {% if alert %}
-    alert('Your Blog is added successfully.');
-    document.location = '/';
+    <script>
+        alert('Your Blog is added successfully.');
+        document.location = '/';
+    </script>
     {% endif %}
-</script>
 {% endblock %}
-
-

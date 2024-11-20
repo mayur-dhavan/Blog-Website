@@ -4,7 +4,7 @@
 {% block homeactive %} active {% endblock homeactive %}
 
 {% block css %}
-
+<!-- Add your CSS styles here -->
 {% endblock %}
 
 {% block body %}
@@ -12,11 +12,9 @@
 
     <!-- Category Tabs Section -->
     <div class="category-tabs">
-        <a href="{% url 'blogs' %}" class="category-btn {% if not request.GET.category %}active{% endif %}">All
-            Categories</a>
+        <a href="{% url 'blogs' %}" class="category-btn {% if not request.GET.category %}active{% endif %}">All Categories</a>
         {% for category in categories %}
-        <a href="?category={{ category.name }}"
-            class="category-btn {% if request.GET.category == category.name %}active{% endif %}">
+        <a href="?category={{ category.name }}" class="category-btn {% if request.GET.category == category.name %}active{% endif %}">
             {{ category.name }}
         </a>
         {% endfor %}
@@ -31,8 +29,30 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ post.title }}</h5>
                     <small>by {{ post.author }} | {{ post.dateTime|date:"F j, Y" }}</small>
-                    <p>{{ post.content|truncatechars:150 }}</p>
+                    <p>{{ post.content|striptags|truncatechars:40 }}</p>
                     <p><strong>Category:</strong> {{ post.category.name }}</p>
+
+                    <!-- Display Rating -->
+                    {% if post.average_rating %}
+                    <div class="home-stars-main" style="display: flex;"><strong>Rating:</strong>
+                        <div class="rating-stars rating-stars-home" style="font-size: 1.2em;">
+                            {% for i in "12345"|make_list %}
+                                {% with i|add:0 as i %}
+                                    {% if post.average_rating >= i %}
+                                    <i class="fas fa-star"></i>  <!-- Full star -->
+                                    {% elif post.average_rating >= i|add:-0.5 %}
+                                    <i class="fas fa-star-half-alt"></i>  <!-- Half star -->
+                                    {% else %}
+                                    <i class="far fa-star"></i>  <!-- Empty star -->
+                                    {% endif %}
+                                {% endwith %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <p>No ratings yet.</p>
+                    {% endif %}
+                    
                     <a href="blog/{{ post.slug }}" class="read-more">Read More</a>
                     {% if user.is_superuser %}
                     <a href="delete_blog_post/{{ post.slug }}/" class="btn btn-danger mx-2">Delete</a>
@@ -56,6 +76,6 @@
 
 {% block js %}
 <script>
-    // Add custom JavaScript if needed
+// Add custom JavaScript if needed
 </script>
 {% endblock %}

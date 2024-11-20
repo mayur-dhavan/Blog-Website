@@ -1,5 +1,6 @@
 from django import forms
 from .models import Profile, BlogPost, Category, BlogRating
+from ckeditor.widgets import CKEditorWidget
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -18,11 +19,11 @@ class BlogPostForm(forms.ModelForm):
 
     class Meta:
         model = BlogPost
-        fields = ('title','category', 'slug', 'content', 'image')  # Include 'category' in fields
+        fields = ('title', 'category', 'slug', 'content', 'image')  # Include 'category' in fields
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Title of the Blog'}),
             'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Copy the title with no space and a hyphen in between'}),
-            'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Content of the Blog'}),
+            'content': CKEditorWidget(attrs={'class': 'form-control', 'placeholder': 'Content of the Blog','id':'id_content'}),  # Use CKEditor for rich text
             'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
 

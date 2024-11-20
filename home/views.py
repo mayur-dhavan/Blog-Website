@@ -8,8 +8,7 @@ from .forms import ProfileForm, BlogPostForm
 from django.views.generic import UpdateView
 from django.contrib import messages
 from django.http import JsonResponse
-
-
+from .forms import BlogRatingForm
 
 
 def blogs(request):
@@ -18,14 +17,26 @@ def blogs(request):
         posts = BlogPost.objects.filter(category__name=category_filter).order_by('-dateTime')
     else:
         posts = BlogPost.objects.all().order_by('-dateTime')
+    
+    # Calculate the average rating for each post
+    for post in posts:
+        ratings = BlogRating.objects.filter(blog=post)  # Get ratings for the current post
+        if ratings.exists():
+            # Calculate the average rating for this post
+            average_rating = ratings.aggregate(Avg('rating'))['rating__avg']
+            post.average_rating = average_rating  # Add average_rating to the post object
+        else:
+            post.average_rating = None  # No ratings yet
+    
     categories = Category.objects.all()  # Fetch all categories for the sidebar or filter options
+
+    # Return the updated posts along with categories to the template
     return render(request, "blog.html", {'posts': posts, 'categories': categories})
 
 
-
+@login_required(login_url='/login')
 def blogs_comments(request, slug):
-    # Fetch the blog post based on the slug
-    post = BlogPost.objects.filter(slug=slug).first()
+    post = get_object_or_404(BlogPost, slug=slug)
     comments = Comment.objects.filter(blog=post)
     
     # Initialize variables for user rating and average rating
@@ -35,26 +46,33 @@ def blogs_comments(request, slug):
     # Check if the user is authenticated
     if request.user.is_authenticated:
         try:
-            # Get the current user's rating for this blog (if it exists)
+            # Get the user's rating for the blog (if it exists)
             user_rating = BlogRating.objects.get(blog=post, user=request.user)
         except BlogRating.DoesNotExist:
             user_rating = None
 
         # Handle form submission for rating
         if request.method == "POST" and 'rating' in request.POST:
-            from .forms import BlogRatingForm  # Import the rating form
             form = BlogRatingForm(request.POST)
             if form.is_valid():
                 # Save or update the user's rating for this blog
                 rating = form.save(commit=False)
                 rating.blog = post
                 rating.user = request.user
-                rating.save()
-                messages.success(request, "Your rating has been submitted!")
+
+                if user_rating:
+                    # If the user already rated, update their rating
+                    user_rating.rating = rating.rating
+                    user_rating.save()
+                    messages.success(request, "Your rating has been updated!")
+                else:
+                    # Otherwise, create a new rating
+                    rating.save()
+                    messages.success(request, "Your rating has been submitted!")
+
                 return redirect('blogs_comments', slug=slug)  # Redirect to prevent duplicate submissions
         else:
-            # Pre-fill the form with the user's existing rating, if available
-            from .forms import BlogRatingForm
+            # If the form is not submitted, use the existing rating if the user has one
             form = BlogRatingForm(instance=user_rating)
     else:
         form = None
@@ -96,22 +114,29 @@ def search(request):
         return render(request, "search.html", {'categories': categories})
 
 
-
 @login_required(login_url='/login')
 def add_blogs(request):
     if request.method == "POST":
+        print("POST Data:", request.POST)  # Print the POST data to the console
+        print("Files Data:", request.FILES)  # Print the uploaded files
         form = BlogPostForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             blogpost = form.save(commit=False)
             blogpost.author = request.user
             blogpost.category = form.cleaned_data['category']  # Save the selected category
             blogpost.save()
-            obj = form.instance
-            alert = True
-            return render(request, "add_blogs.html", {'obj': obj, 'alert': alert})
+            # Show success message using Django's messages framework
+            messages.success(request, 'Your blog has been added successfully!')
+            return redirect('blogs')  # Redirect to the homepage or another view
+        else:
+            # Log form errors and show error message
+            print(form.errors)
+            messages.error(request, 'Please correct the errors in the form.')
     else:
         form = BlogPostForm()
+
     return render(request, "add_blogs.html", {'form': form})
+
 
 
 
