@@ -7,11 +7,15 @@
 
   {% load static %}
   <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.1/dist/tailwind.min.css" rel="stylesheet">
 
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
   <!-- Favicon -->
   <link rel="icon"
@@ -23,347 +27,68 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   <title>{% block title %}{% endblock %}</title>
-
-
-  <style>
-    /* Custom CSS */
-    .navbar {
-      transition: background-color 0.3s ease;
-    }
-
-    .navbar.scrolled {
-      background-color: rgba(0, 0, 0, 0.9);
-    }
-
-    .navbar-brand img {
-      width: 10%;
-      /* Adjust logo size */
-      height: auto;
-    }
-
-    .nav-link:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .header-logo {
-      width: 8%;
-
-    }
-
-    .footer-links a {
-      text-decoration: none;
-    }
-
-    .search-bar {
-      width: 200px;
-      /* Increase the width of the search bar */
-    }
-
-    .category-tabs {
-      display: flex;
-      text-align: center;
-      margin-bottom: 30px;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      align-content: center;
-    }
-
-    .category-tabs a {
-      text-decoration: none;
-    }
-
-    .category-tabs .category-btn {
-      margin: 5px;
-      padding: 10px 15px;
-      font-size: 16px;
-      color: #fff;
-      background-color: #007bff;
-      border: none;
-      border-radius: 20px;
-      transition: all 0.3s ease-in-out;
-    }
-
-    .category-tabs .category-btn:hover,
-    .category-tabs .category-btn.active {
-      background-color: #0056b3;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    .blog-card {
-      width: 100%;
-      max-width: 360px;
-      margin: 0 auto;
-      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    }
-
-    .blog-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .blog-card img {
-      border-radius: 10px 10px 0 0;
-      object-fit: cover;
-      height: 200px;
-    }
-
-    .blog-card .card-body {
-      padding: 15px;
-    }
-
-    .blog-card .card-body h5 {
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
-
-    .blog-card .card-body p {
-      color: #555;
-      margin-top: 10px;
-    }
-
-    .blog-card .card-body .read-more {
-      margin-top: 15px;
-      display: inline-block;
-      padding: 10px 20px;
-      color: #fff;
-      background-color: #007bff;
-      border-radius: 5px;
-      text-decoration: none;
-      transition: all 0.3s ease-in-out;
-    }
-
-    .blog-card .card-body .read-more:hover {
-      background-color: #0056b3;
-    }
-
-
-    /* new css added here for blogs */
-    .edit {
-      float: right;
-    }
-
-    /* Blog Post Title */
-    .blog-post-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    /* Category Text */
-    .blog-post-category {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #555;
-    }
-
-    /* Media section (Author Image + Info) */
-    .media-body h5 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .media-body {
-      padding-left: 15px;
-    }
-
-    /* Author Image */
-    .media img {
-      border-radius: 50%;
-    }
-
-    /* Post Image */
-    .post-image {
-      width: 30%;
-      height: auto;
-      margin-top: 15px;
-      border-radius: 8px;
-    }
-
-    /* Content */
-    .blog-content {
-      font-size: 1.1rem;
-      color: #444;
-      line-height: 1.6;
-      margin-top: 20px;
-    }
-
-    /* Rating Section */
-    .rating-section {
-      margin-top: 20px;
-    }
-
-    .rating-section h4 {
-      font-size: 1.3rem;
-      color: #333;
-    }
-
-    .form-floating {
-      margin-top: 10px;
-    }
-
-    /* Comments Section */
-    .comments-section {
-      margin-top: 40px;
-    }
-
-    .comment-card {
-      margin-bottom: 20px;
-    }
-
-    .comment-card-header {
-      background-color: #f8f9fa;
-      font-size: 1.1rem;
-      padding: 10px;
-      border-radius: 5px 5px 0 0;
-    }
-
-    .comment-card-body {
-      padding: 15px;
-      background-color: #fff;
-      border-radius: 0 0 5px 5px;
-    }
-
-    .comment-card-header span {
-      color: #555;
-    }
-
-    .comment-card-body h6 {
-      font-size: 1.1rem;
-      color: #444;
-    }
-
-    /* Buttons */
-    .btn-primary {
-      background-color: #007bff;
-      border: 1px solid #007bff;
-    }
-
-    .btn-primary:hover {
-      background-color: #0056b3;
-      border-color: #0056b3;
-    }
-
-    .btn-warning {
-      background-color: #ffc107;
-      border: 1px solid #ffc107;
-    }
-
-    .btn-warning:hover {
-      background-color: #e0a800;
-      border-color: #e0a800;
-    }
-
-    /* Rating container styles */
-    .rating-stars {
-      display: flex;
-      align-items: center;
-    }
-
-    .rating-stars-home i {
-      font-size: 1.3rem !important;
-    }
-
-    .rating-stars-home {
-      padding-left: 5px;
-    }
-
-    .rating-stars i {
-      color: gold;
-      /* Star color */
-      font-size: 1.5rem;
-      /* Adjust the size of the stars */
-      margin-right: 5px;
-      /* Space between stars */
-    }
-
-    .rating-stars .fa-star-half-alt {
-      color: #ffcc00;
-      /* Half star color */
-    }
-
-    .rating-stars .fa-star {
-      color: gold;
-      /* Empty star color */
-    }
-
-    .top-banner {
-      height: fit-content;
-      width: fit-content;
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      padding: 20px;
-
-    }
-
-    .hero-banner-background {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      background-image: url('https://marketing-queen.com/wp-content/uploads/2020/03/Hero-Image-Responsiveness_166089026.jpg');
-      background-size: cover;
-      height: 50vh;
-    }
-  </style>
-
-
-
 </head>
 
-<body>
+<body class="transition-all duration-300 ease-in-out">
+
+  <!-- Dark Mode Toggle Button -->
+  <button id="darkModeToggle" class="dark-toggle light-toggle">
+    <i id="darkModeIcon" class="bi bi-moon"></i>
+  </button>
+
+
   <!-- Navbar Section -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">
-        <img style="width: 8%;"
-          src="https://e7.pngegg.com/pngimages/481/8/png-clipart-comparison-of-free-blog-hosting-services-computer-icons-blog-blogger-icon-blue-logo.png"
-          alt="Logo"> Blog Website Using Django
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <div class="container mx-3">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link {% block homeactive %}{% endblock homeactive %}" aria-current="page" href="/">Home</a>
-            </li>
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link {% block add_blogs_active %}{% endblock add_blogs_active %}" href="/add_blogs/">Add
-                Blogs</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Hello {{ request.user }}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% block profileactive %}{% endblock profileactive %}" href="/profile/">Profile</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/logout/">Logout</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link {% block registeractive %}{% endblock registeractive %}" href="/register/">Register</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% block loginactive %}{% endblock loginactive %}" href="/login/">Login</a>
-            </li>
-            {% endif %}
-          </ul>
-        </div>
-        <form class="d-flex" method="POST" action="/search/"> {% csrf_token %}
-          <input class="form-control me-2 search-bar" type="search" placeholder="Search" name="searched" id="searched"
-            aria-label="Search" style="width: 200px;">
-          <button href="/search/" class="btn btn-outline-secondary" type="submit">Search</button>
-        </form>
+<nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      <img style="width: 8%;"
+        src="https://e7.pngegg.com/pngimages/481/8/png-clipart-comparison-of-free-blog-hosting-services-computer-icons-blog-blogger-icon-blue-logo.png"
+        alt="Logo">
+      Blog Website Using Django
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="container mx-3">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link {% block homeactive %}{% endblock homeactive %}" aria-current="page" href="/">Home</a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link {% block add_blogs_active %}{% endblock add_blogs_active %}" href="/add_blogs/">Add Blogs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Hello {{ request.user }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% block profileactive %}{% endblock profileactive %}" href="/profile/">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout/">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link {% block registeractive %}{% endblock registeractive %}" href="/register/">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% block loginactive %}{% endblock loginactive %}" href="/login/">Login</a>
+          </li>
+          {% endif %}
+        </ul>
       </div>
+      <form class="d-flex" method="POST" action="/search/">
+        {% csrf_token %}
+        <input class="form-control me-2 search-bar" type="search" placeholder="Search" name="searched" id="searched"
+          aria-label="Search" style="width: 200px;">
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+      </form>
     </div>
-  </nav>
+  </div>
+</nav>
+
 
   <!-- Main Content Section -->
   {% block hero-banner %}
@@ -404,17 +129,10 @@
     crossorigin="anonymous"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-  <script>
-    // Change navbar background on scroll
-    $(window).scroll(function () {
-      if ($(this).scrollTop() > 50) {
-        $('.navbar').addClass('scrolled');
-      } else {
-        $('.navbar').removeClass('scrolled');
-      }
-    });
-  </script>
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+  <script src="{% static 'js/scripts.js' %}"></script>
   {% block js %}{% endblock %}
 </body>
 
