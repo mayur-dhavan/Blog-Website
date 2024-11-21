@@ -1,0 +1,526 @@
+ /* Light Theme (default) */
+ body {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  .navbar {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  /* Dark Theme */
+  .dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+  }
+
+  .dark-mode .navbar {
+    background-color: #333333;
+    color: #ffffff;
+  }
+
+  .dark-mode .navbar .nav-link {
+    color: #ffffff;
+    /* Light color for navbar links in dark mode */
+  }
+
+  .dark-mode .navbar .nav-link:hover {
+    background-color: #555555;
+    /* Hover effect for dark mode */
+  }
+
+  .dark-mode .footer-links a {
+    color: #ffffff;
+  }
+
+  .dark-mode .footer-links a:hover {
+    color: #ddd;
+  }
+
+  /* Additional custom styles for dark mode */
+  .dark-mode .category-tabs .category-btn {
+    background-color: #007bff;
+    /* Dark mode button color */
+  }
+
+  .dark-mode .blog-card {
+    background-color: #1e1e1e;
+    color: #ffffff;
+  }
+
+  .dark-mode .blog-card:hover {
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .dark-mode .post-image {
+    border: 1px solid #ffffff;
+  }
+
+  /* Rating stars in dark mode */
+  .dark-mode .rating-stars i {
+    color: #ffcc00;
+    /* Gold color for stars */
+  }
+
+  .dark-mode .card-body p {
+    color: white !important;
+  }
+
+
+  /* Adding styles for taggle button */
+  /* Common Styles for Toggle Button */
+.dark-toggle {
+position: fixed;
+bottom: 10%;
+right: 10px;
+z-index: 9999;
+width: 60px;
+height: 60px;
+border-radius: 50%;
+display: flex;
+justify-content: center;
+align-items: center;
+border: none;
+cursor: pointer;
+transition: all 0.3s ease-in-out;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Light Mode - Default */
+.light-mode .dark-toggle {
+background-color: black;
+color: white;
+box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Glow for light mode */
+}
+
+/* Dark Mode */
+.dark-mode .dark-toggle {
+background-color: white;
+color: black;
+box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Glow for dark mode */
+}
+
+/* Hover Glow Effect */
+.dark-toggle:hover {
+box-shadow: 0 0 20px rgba(255, 255, 0, 0.8); /* Brighter glow */
+transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Icon Styling */
+.dark-toggle i {
+font-size: 1.5rem;
+transition: transform 0.3s ease-in-out;
+}
+
+.dark-mode .dark-toggle i {
+transform: rotate(180deg); /* Smooth rotation for icon in dark mode */
+}
+
+
+  /* Custom CSS */
+  .navbar {
+    transition: background-color 0.3s ease;
+  }
+
+  .navbar.scrolled {
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+
+  .navbar-brand img {
+    width: 10%;
+    /* Adjust logo size */
+    height: auto;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .header-logo {
+    width: 8%;
+
+  }
+
+  .footer-links a {
+    text-decoration: none;
+  }
+
+  .search-bar {
+    width: 200px;
+    /* Increase the width of the search bar */
+  }
+
+  .category-tabs {
+    display: flex;
+    text-align: center;
+    margin-bottom: 30px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+
+  .category-tabs a {
+    text-decoration: none;
+  }
+
+  .category-tabs .category-btn {
+    margin: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 20px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .category-tabs .category-btn:hover,
+  .category-tabs .category-btn.active {
+    background-color: #0056b3;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .blog-card {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .blog-card img {
+    border-radius: 10px 10px 0 0;
+    object-fit: cover;
+    height: 200px;
+  }
+
+  .blog-card .card-body {
+    padding: 15px;
+  }
+
+  .blog-card .card-body h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .blog-card .card-body p {
+    color: #555;
+    margin-top: 10px;
+  }
+
+  .blog-card .card-body .read-more {
+    margin-top: 15px;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .blog-card .card-body .read-more:hover {
+    background-color: #0056b3;
+  }
+
+
+  /* new css added here for blogs */
+  .edit {
+    float: right;
+  }
+
+  /* Blog Post Title */
+  .blog-post-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    /* color: #333; */
+    margin-bottom: 20px;
+  }
+
+  /* Category Text */
+  .blog-post-category {
+    font-size: 1.1rem;
+    font-weight: 600;
+    /* color: #555; */
+  }
+
+  /* Media section (Author Image + Info) */
+  .media-body h5 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    /* color: #333; */
+  }
+
+  .media-body {
+    padding-left: 15px;
+  }
+
+  /* Author Image */
+  .media img {
+    border-radius: 50%;
+  }
+
+  /* Post Image */
+  .post-image {
+    width: 30%;
+    height: auto;
+    margin-top: 15px;
+    border-radius: 8px;
+  }
+
+  /* Content */
+  .blog-content {
+    font-size: 1.1rem;
+    /* color: #444; */
+    line-height: 1.6;
+    margin-top: 20px;
+  }
+
+  /* Rating Section */
+  .rating-section {
+    margin-top: 20px;
+  }
+
+  .rating-section h4 {
+    font-size: 1.3rem;
+    /* color: #333; */
+  }
+
+  .form-floating {
+    margin-top: 10px;
+  }
+
+  /* Comments Section */
+  .comments-section {
+    margin-top: 40px;
+  }
+
+  .comment-card {
+    margin-bottom: 20px;
+  }
+
+  .comment-card-header {
+    background-color: #f8f9fa;
+    font-size: 1.1rem;
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .comment-card-body {
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 0 0 5px 5px;
+  }
+
+  /* .comment-card-header span {
+    color: #555;
+  } */
+
+  .comment-card-body h6 {
+    font-size: 1.1rem;
+    /* color: #444; */
+  }
+
+  /* Buttons */
+  .btn-primary {
+    background-color: #007bff;
+    border: 1px solid #007bff;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+
+  .btn-warning {
+    background-color: #ffc107;
+    border: 1px solid #ffc107;
+  }
+
+  .btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #e0a800;
+  }
+
+  /* Rating container styles */
+  .rating-stars {
+    display: flex;
+    align-items: center;
+  }
+
+  .rating-stars-home i {
+    font-size: 1.3rem !important;
+  }
+
+  .rating-stars-home {
+    padding-left: 5px;
+  }
+
+  .rating-stars i {
+    color: gold;
+    /* Star color */
+    font-size: 1.5rem;
+    /* Adjust the size of the stars */
+    margin-right: 5px;
+    /* Space between stars */
+  }
+
+  .rating-stars .fa-star-half-alt {
+    color: #ffcc00;
+    /* Half star color */
+  }
+
+  .rating-stars .fa-star {
+    color: gold;
+    /* Empty star color */
+  }
+
+  .top-banner {
+    height: fit-content;
+    width: fit-content;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 20px;
+
+  }
+
+  .hero-banner-background {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-image: url('https://marketing-queen.com/wp-content/uploads/2020/03/Hero-Image-Responsiveness_166089026.jpg');
+    background-size: cover;
+    height: 50vh;
+  }
+
+
+  /* Default Navbar Styles */
+.navbar {
+transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light Mode Navbar */
+.light-mode .navbar {
+background-color: #ffffff !important; /* Light background */
+color: #000000 !important; /* Dark text */
+border-bottom: 1px solid #ddd; /* Subtle border for light mode */
+}
+
+.light-mode .navbar-brand,
+.light-mode .nav-link,
+.light-mode .search-bar {
+color: #000000 !important;
+}
+
+.light-mode .nav-link:hover {
+color: #007bff !important; /* Hover color in light mode */
+}
+
+.light-mode .btn-outline-secondary {
+border-color: #000000;
+color: #000000;
+}
+
+.light-mode .btn-outline-secondary:hover {
+background-color: #000000;
+color: #ffffff;
+}
+
+/* Dark Mode Navbar */
+.dark-mode .navbar {
+background-color: #212529 !important; /* Dark background */
+color: #ffffff !important; /* Light text */
+border-bottom: none;
+}
+
+.dark-mode .navbar-brand,
+.dark-mode .nav-link,
+.dark-mode .search-bar {
+color: #ffffff !important;
+}
+
+.dark-mode .nav-link:hover {
+color: #ffcc00 !important; /* Hover color in dark mode */
+}
+
+.dark-mode .btn-outline-secondary {
+border-color: #ffffff;
+color: #ffffff;
+}
+
+.dark-mode .btn-outline-secondary:hover {
+background-color: #ffffff;
+color: #000000;
+}
+
+/* Scrolled Navbar */
+.navbar.scrolled {
+background-color: rgba(0, 0, 0, 0.9) !important; /* Darker background */
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+transition: background-color 0.3s ease-in-out;
+}
+
+.light-mode .navbar.scrolled {
+background-color: rgba(255, 255, 255, 0.9) !important;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.navbar.scrolled .nav-link {
+color: inherit !important;
+}
+
+/* General Footer Styles */
+.footer {
+font-size: 0.9rem;
+border-top: 1px solid #ccc; /* Light border for separation */
+}
+
+.footer p {
+margin: 0;
+}
+
+/* Link Styles */
+.footer-links .footer-link {
+text-decoration: none;
+font-weight: 500;
+transition: color 0.3s ease;
+}
+
+.footer-links .footer-link:hover {
+text-decoration: underline;
+}
+
+/* Light Mode Footer */
+body.light-mode .footer {
+background-color: #f8f9fa; /* Light gray background */
+color: #343a40; /* Dark gray text */
+}
+
+body.light-mode .footer-links .footer-link {
+color: #007bff; /* Blue links */
+}
+
+body.light-mode .footer-links .footer-link:hover {
+color: #0056b3; /* Darker blue on hover */
+}
+
+/* Dark Mode Footer */
+body.dark-mode .footer {
+background-color: #212529; /* Dark background */
+color: #f8f9fa; /* Light text */
+}
+
+body.dark-mode .footer-links .footer-link {
+color: #f8f9fa; /* Light links */
+}
+
+body.dark-mode .footer-links .footer-link:hover {
+color: #adb5bd; /* Light gray on hover */
+}
