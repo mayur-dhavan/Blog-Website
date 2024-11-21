@@ -12,12 +12,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'ejcw-d5t67dgrz$_evfgd#kz7y_ku70urb5bnncn2^3*&o0l&@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '.ngrok.io', 
     'localhost', 
-    '127.0.0.1'
+    '127.0.0.1',
+    'f1a0-2409-40c2-1026-3f11-dda2-e530-de1f-5cc3.ngrok-free.app'
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://f1a0-2409-40c2-1026-3f11-dda2-e530-de1f-5cc3.ngrok-free.app',
+    'http://f1a0-2409-40c2-1026-3f11-dda2-e530-de1f-5cc3.ngrok-free.app',  
 ]
 
 

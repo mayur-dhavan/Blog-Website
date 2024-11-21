@@ -14,7 +14,7 @@ urlpatterns = [
 
     
 #     profile
-    path("profile/", views.Profile, name="profile"),
+    path("profile/", views.profile_page, name="profile"),
     path("edit_profile/", views.edit_profile, name="edit_profile"),
     path("user_profile/<int:myid>/", views.user_profile, name="user_profile"),
     

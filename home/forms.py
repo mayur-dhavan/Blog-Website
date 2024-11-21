@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, BlogPost, Category, BlogRating
+from .models import *
 from ckeditor.widgets import CKEditorWidget
 
 class ProfileForm(forms.ModelForm):
@@ -40,4 +40,12 @@ class BlogRatingForm(forms.ModelForm):
         }
         labels = {
             'rating': 'Rate this blog (1-5):',
+        }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']  # Only the content field
+        widgets = {
+            'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Leave a comment here', 'style': 'height: 100px'})
         }

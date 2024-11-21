@@ -8,7 +8,7 @@ from .forms import ProfileForm, BlogPostForm
 from django.views.generic import UpdateView
 from django.contrib import messages
 from django.http import JsonResponse
-from .forms import BlogRatingForm
+from .forms import *
 
 
 def blogs(request):
@@ -34,50 +34,60 @@ def blogs(request):
     return render(request, "blog.html", {'posts': posts, 'categories': categories})
 
 
-@login_required(login_url='/login')
+# @login_required(login_url='/login')
 def blogs_comments(request, slug):
     post = get_object_or_404(BlogPost, slug=slug)
     comments = Comment.objects.filter(blog=post)
-    
-    # Initialize variables for user rating and average rating
     user_rating = None
     average_rating = None
+    comment_form = None  # Initialize the comment_form variable
 
-    # Check if the user is authenticated
+    # Check for user rating
     if request.user.is_authenticated:
         try:
-            # Get the user's rating for the blog (if it exists)
             user_rating = BlogRating.objects.get(blog=post, user=request.user)
         except BlogRating.DoesNotExist:
             user_rating = None
 
-        # Handle form submission for rating
+        # Handling rating submission
         if request.method == "POST" and 'rating' in request.POST:
             form = BlogRatingForm(request.POST)
             if form.is_valid():
-                # Save or update the user's rating for this blog
                 rating = form.save(commit=False)
                 rating.blog = post
                 rating.user = request.user
 
                 if user_rating:
-                    # If the user already rated, update their rating
+                    # Update the user's rating
                     user_rating.rating = rating.rating
                     user_rating.save()
                     messages.success(request, "Your rating has been updated!")
                 else:
-                    # Otherwise, create a new rating
+                    # Create a new rating
                     rating.save()
                     messages.success(request, "Your rating has been submitted!")
 
-                return redirect('blogs_comments', slug=slug)  # Redirect to prevent duplicate submissions
+                return redirect('blogs_comments', slug=slug)
         else:
-            # If the form is not submitted, use the existing rating if the user has one
             form = BlogRatingForm(instance=user_rating)
+
+        # Handle comment submission
+        if request.method == "POST" and 'content' in request.POST:
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.blog = post
+                comment.user = request.user
+                comment.save()
+                messages.success(request, "Your comment has been posted!")
+                return redirect('blogs_comments', slug=slug)
+        else:
+            comment_form = CommentForm()  # Initialize the comment_form if no post request is made
     else:
         form = None
+        comment_form = CommentForm()  # Ensure comment_form is initialized for unauthenticated users
 
-    # Calculate the average rating for the blog
+    # Get the average rating for the blog post
     ratings = BlogRating.objects.filter(blog=post)
     if ratings.exists():
         average_rating = ratings.aggregate(Avg('rating'))['rating__avg']
@@ -87,8 +97,11 @@ def blogs_comments(request, slug):
         'comments': comments,
         'user_rating': user_rating,
         'average_rating': average_rating,
-        'form': form,  # Pass the form to the template
+        'form': form,
+        'comment_form': comment_form,  # Pass the comment form to the template
     })
+
+
 
 
 def Delete_Blog_Post(request, slug):
@@ -151,7 +164,7 @@ def user_profile(request, myid):
     post = BlogPost.objects.filter(id=myid)
     return render(request, "user_profile.html", {'post':post})
 
-def Profile(request):
+def profile_page(request):
     return render(request, "profile.html")
 
 def edit_profile(request):
